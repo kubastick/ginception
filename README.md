@@ -1,4 +1,5 @@
 # Ginception - Catch panics like a pro
+[![Build Status](https://travis-ci.org/kubastick/ginception.svg?branch=master)](https://travis-ci.org/kubastick/ginception)  
 This is exception page middleware that look's like `ASP.NET core` one for `Golang Gin-Gionic`
 
 ![](https://raw.githubusercontent.com/kubastick/ginception/master/assets/example-page.png?token=AYaz47c76RD61RM2G7qdaAInGYEbWwuOks5cZIFbwA%3D%3D)
