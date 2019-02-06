@@ -1,4 +1,4 @@
-module ginception
+module github.com/kubastick/ginception
 
 require (
 	github.com/gin-contrib/sse v0.0.0-20190125020943-a7658810eb74 // indirect
