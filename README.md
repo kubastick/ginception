@@ -9,7 +9,7 @@ Features:
 - All cookies and their values
 - Request headers
 
-### Instalation
+### Installation
 `go get github.com/kubastick/ginception`  
 This package is following Go Mod (vgo) modules system
 ### Usage
