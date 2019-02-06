@@ -301,7 +301,7 @@ a {
 }</style></head>
     <body>
         <h1>An unhandled panic occurred while processing the request.</h1>
-            <div class="titleerror">Exception: {{ .exception }}</div>
+            <div class="titleerror">Panic: {{ .Exception }}</div>
         <ul id="header">
             <li id="stack" tabindex="1" class="selected">
                 Stack
@@ -320,61 +320,25 @@ a {
         <div id="stackpage" class="page" style="">
             <ul>
                                     <li>
-                        <h2 class="stackerror">Exception: Test exception</h2>
+                        <h2 class="stackerror">Panic: {{ .Exception }}</h2>
                         <ul>
                             <li class="frame" id="frame1">
-                                    <h3>AspTutorial.Startup+&lt;&gt;c+&lt;&lt;Configure&gt;b__1_0&gt;d.MoveNext() in <code title="C:\Users\Jakub Tomana\RiderProjects\AspTutorial\AspTutorial\Startup.cs">Startup.cs</code></h3>
-
-                                    <button class="expandCollapseButton" data-frameid="frame1">-</button>
-                                    <div class="source">
-                                            <ol start="22" class="collapsible" style="">
-                                                    <li><span>        {</span></li>
-                                                    <li><span>            if (env.IsDevelopment())</span></li>
-                                                    <li><span>            {</span></li>
-                                                    <li><span>                app.UseDeveloperExceptionPage();</span></li>
-                                                    <li><span>            }</span></li>
-                                                    <li><span></span></li>
-                                            </ol>
-
-                                        <ol start="28" class="highlight">
-                                                <li><span>            app.Run(async (context) =&gt; { throw new Exception("Test exception");});</span></li>
-                                        </ol>
-
-                                            <ol start="29" class="collapsible" style="">
-                                                    <li><span>        }</span></li>
-                                                    <li><span>    }</span></li>
-                                                    <li><span>}</span></li>
-                                            </ol>
-                                    </div>
-                            </li>
-                            <li class="frame" id="frame2">
-                                    <h3>Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)</h3>
-
+                                     <pre class="rawExceptionStackTrace">{{.StackTrace}}</pre>
                             </li>
                         </ul>
-                    </li>
-                    <li>
-                        <br>
-                        <div class="rawExceptionBlock">
-                            <div class="showRawExceptionContainer">
-                                <button class="showRawException" data-exceptiondetailid="exceptionDetail1">Show raw exception details</button>
-                            </div>
-                            <div id="exceptionDetail1" class="rawExceptionDetails" style="display: none;">
-                                <pre class="rawExceptionStackTrace">System.Exception: Test exception
-   at AspTutorial.Startup.&lt;&gt;c.&lt;&lt;Configure&gt;b__1_0&gt;d.MoveNext() in C:\Users\Jakub Tomana\RiderProjects\AspTutorial\AspTutorial\Startup.cs:line 28
---- End of stack trace from previous location where exception was thrown ---
-   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)</pre>
-                            </div>
-                        </div>
                     </li>
             </ul>
         </div>
 
         <div id="querypage" class="page" style="display: none;">
-                <p>No QueryString data.</p>
+                <p>{{ .Query }}</p>
         </div>
 
         <div id="cookiespage" class="page" style="display: none;">
+				{{ if .WithoutCookies }}
+ 					<p>No cookies data.</p>
+				{{ end }} 
+				{{ if .HaveCookies }}
                 <table>
                     <thead>
                         <tr>
@@ -383,12 +347,15 @@ a {
                         </tr>
                     </thead>
                     <tbody>
+							{{ range $key, $value := .Cookies }}
                             <tr>
-                                <td>Goland-18b52775</td>
-                                <td>4f1ea814-29cf-4323-af55-5203a1e21e06</td>
+                                <td>{{ $value.Name }}</td>
+                                <td>{{ $value.Value }}</td>
                             </tr>
+							{{ end }}
                     </tbody>
                 </table>
+				{{ end }}
         </div>
         <div id="headerspage" class="page" style="display: none;">
                 <table>
@@ -399,38 +366,12 @@ a {
                         </tr>
                     </thead>
                     <tbody>
-                                <tr>
-                                    <td>Accept</td>
-                                    <td>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</td>
-                                </tr>
-                                <tr>
-                                    <td>Accept-Encoding</td>
-                                    <td>gzip, deflate, br</td>
-                                </tr>
-                                <tr>
-                                    <td>Accept-Language</td>
-                                    <td>en-GB,en;q=0.9,pl-PL;q=0.8,pl;q=0.7,en-US;q=0.6</td>
-                                </tr>
-                                <tr>
-                                    <td>Connection</td>
-                                    <td>keep-alive</td>
-                                </tr>
-                                <tr>
-                                    <td>Cookie</td>
-                                    <td>Goland-18b52775=4f1ea814-29cf-4323-af55-5203a1e21e06</td>
-                                </tr>
-                                <tr>
-                                    <td>Host</td>
-                                    <td>localhost:5001</td>
-                                </tr>
-                                <tr>
-                                    <td>Upgrade-Insecure-Requests</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>User-Agent</td>
-                                    <td>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36</td>
-                                </tr>
+{{ range $key, $value := .Headers }}
+<tr>
+<td>{{$key}}</td>
+<td>{{$value}}</td>
+</tr>
+{{ end }}
                     </tbody>
                 </table>
         </div>
